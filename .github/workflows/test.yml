@@ -25,7 +25,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest --cov=. --cov-report=xml tests/ || true
+          pytest --cov=CISC327-CMPE327-F25 --cov-report=xml tests/ || true
 
       - name: Check coverage file
         run: ls -l coverage.xml
