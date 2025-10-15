@@ -1,5 +1,7 @@
 # Library Management System - Flask Web Application with SQLite
 
+![Library Test](https://github.com/dermottduggan/cisc327-library-management-a2-8837/actions/workflows/test.yml/badge.svg)
+
 ## Overview
 
 This project contains a partial implementation of a Flask-based Library Management System with SQLite database, designed for CISC 327 (Software Quality Assurance) coursework.
@@ -19,18 +21,22 @@ Students are provided with:
 - [`requirements.txt`](requirements.txt): Python dependencies
 
 ## ❗ Known Issues
+
 The implemented functions may contain intentional bugs. Students should discover these through unit testing (to be covered in later assignments).
 
 ## Database Schema
+
 **Books Table:**
+
 - `id` (INTEGER PRIMARY KEY)
 - `title` (TEXT NOT NULL)
-- `author` (TEXT NOT NULL)  
+- `author` (TEXT NOT NULL)
 - `isbn` (TEXT UNIQUE NOT NULL)
 - `total_copies` (INTEGER NOT NULL)
 - `available_copies` (INTEGER NOT NULL)
 
 **Borrow Records Table:**
+
 - `id` (INTEGER PRIMARY KEY)
 - `patron_id` (TEXT NOT NULL)
 - `book_id` (INTEGER FOREIGN KEY)
@@ -39,6 +45,7 @@ The implemented functions may contain intentional bugs. Students should discover
 - `return_date` (TEXT NULL)
 
 ## Assignment Instructions
+
 See [`student_instructions.md`](student_instructions.md) for complete assignment details.
 
 **Resources for students:**
@@ -47,5 +54,3 @@ See [`student_instructions.md`](student_instructions.md) for complete assignment
 - [Test Driven Development](https://www.datacamp.com/tutorial/test-driven-development-in-python)
 - [Pytest framework](https://realpython.com/pytest-python-testing/)
 - [Python Blueprint](https://flask.palletsprojects.com/en/stable/blueprints)
-
-
