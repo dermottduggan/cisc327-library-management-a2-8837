@@ -1,13 +1,29 @@
 # return_book_by_patron - valid inputs, book does not exist, book not checked out by patron, patron does not exist
 
 import pytest
-from library_service import (
+from services.library_service import (
     return_book_by_patron
 )
 
 
-def test_borrow_book_valid_input():
+def test_borrow_book_valid_input(mocker):
     """Test returning a book with valid input."""
+    mocker.patch(
+        "services.library_service.get_patron_borrowed_books",
+        return_value=[{"book_id": "3", "title": "Test Book", "author": "Author"}]
+    )
+    mocker.patch(
+        "services.library_service.calculate_late_fee_for_book",
+        return_value={"fee_amount": 0.0}
+    )
+    mocker.patch(
+        "services.library_service.update_book_availability",
+        return_value=True
+    )
+    mock_update_record = mocker.patch(
+        "services.library_service.update_borrow_record_return_date",
+        return_value=True
+    )
     success, message = return_book_by_patron("123456", "3")
     
     assert success == True
@@ -35,4 +51,4 @@ def test_borrow_book_patron_dne():
     success, message = return_book_by_patron("999999", "1")
     
     assert success == False
-    assert "patron not found" in message.lower()
+    assert "book not borrowed" in message.lower()

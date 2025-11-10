@@ -1,7 +1,7 @@
 # borrow_book_by_patron - non-digit patron id, patron id too long, book does not exist, book with 0 copies available, valid inputs
 
 import pytest
-from library_service import (
+from services.library_service import (
     borrow_book_by_patron
 )
 
@@ -35,9 +35,17 @@ def test_borrow_book_book_not_available():
     assert "currently not available" in message.lower()
 
 
-def test_borrow_book_valid_input():
+def test_borrow_book_valid_input(mocker):
     """Test borrowing a book with valid input."""
-    success, message = borrow_book_by_patron("123456", "1")
+    mocker.patch("services.library_service.get_db_connection", autospec=True)
+    mocker.patch("services.library_service.get_patron_borrow_count", return_value=2)
+    mocker.patch("services.library_service.get_book_by_id", return_value={
+        "book_id": 12, "title": "Test Book", "author": "Test Author", "available_copies": 5
+    })
+    mock_insert = mocker.patch("services.library_service.insert_borrow_record", return_value=True)
+    mock_update = mocker.patch("services.library_service.update_book_availability", return_value=True)
+
+    success, message = borrow_book_by_patron("123456", 12)
     
     assert success == True
     assert "successfully borrowed" in message.lower()

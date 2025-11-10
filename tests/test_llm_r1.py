@@ -1,11 +1,11 @@
 import pytest
-from library_service import add_book_to_catalog
+from services.library_service import add_book_to_catalog
 from database import get_book_by_isbn, insert_book 
 
 def test_add_valid_book_success(monkeypatch):
     """✅ Normal case: Adds a valid new book successfully."""
-    monkeypatch.setattr("database.get_book_by_isbn", lambda isbn: None)
-    monkeypatch.setattr("database.insert_book", lambda *args: True)
+    monkeypatch.setattr("services.library_service.get_book_by_isbn", lambda isbn: None)
+    monkeypatch.setattr("services.library_service.insert_book", lambda *args: True)
     
     success, message = add_book_to_catalog(
         title="Clean Code",
@@ -21,8 +21,8 @@ def test_add_valid_book_success(monkeypatch):
 
 def test_add_book_title_max_length(monkeypatch):
     """⚙️ Edge case: Title exactly 200 characters."""
-    monkeypatch.setattr("database.get_book_by_isbn", lambda isbn: None)
-    monkeypatch.setattr("database.insert_book", lambda *args: True)
+    monkeypatch.setattr("services.library_service.get_book_by_isbn", lambda isbn: None)
+    monkeypatch.setattr("services.library_service.insert_book", lambda *args: True)
     
     title = "A" * 200
     success, message = add_book_to_catalog(
@@ -37,7 +37,7 @@ def test_add_book_title_max_length(monkeypatch):
 
 def test_add_book_duplicate_isbn(monkeypatch):
     """⚙️ Edge case: Attempt to add a book with an existing ISBN."""
-    monkeypatch.setattr("database.get_book_by_isbn", lambda isbn: {"title": "Existing Book"})
+    monkeypatch.setattr("services.library_service.get_book_by_isbn", lambda isbn: {"title": "Existing Book"})
     
     success, message = add_book_to_catalog(
         title="New Book",
@@ -53,7 +53,7 @@ def test_add_book_duplicate_isbn(monkeypatch):
 
 def test_add_book_missing_title(monkeypatch):
     """❌ Invalid case: Missing title."""
-    monkeypatch.setattr("database.get_book_by_isbn", lambda isbn: None)
+    monkeypatch.setattr("services.library_service.get_book_by_isbn", lambda isbn: None)
     
     success, message = add_book_to_catalog(
         title="   ",  # Blank title
@@ -67,7 +67,7 @@ def test_add_book_missing_title(monkeypatch):
 
 def test_add_book_invalid_isbn_length(monkeypatch):
     """❌ Invalid case: ISBN not 13 digits."""
-    monkeypatch.setattr("database.get_book_by_isbn", lambda isbn: None)
+    monkeypatch.setattr("services.library_service.get_book_by_isbn", lambda isbn: None)
     
     success, message = add_book_to_catalog(
         title="Test Book",
@@ -81,7 +81,7 @@ def test_add_book_invalid_isbn_length(monkeypatch):
 
 def test_add_book_negative_total_copies(monkeypatch):
     """❌ Invalid case: Total copies is not a positive integer."""
-    monkeypatch.setattr("database.get_book_by_isbn", lambda isbn: None)
+    monkeypatch.setattr("services.library_service.get_book_by_isbn", lambda isbn: None)
     
     success, message = add_book_to_catalog(
         title="Book Title",

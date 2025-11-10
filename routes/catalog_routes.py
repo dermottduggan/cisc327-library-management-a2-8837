@@ -4,7 +4,7 @@ Catalog Routes - Book catalog related endpoints
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database import get_all_books
-from library_service import add_book_to_catalog
+from services.library_service import add_book_to_catalog
 
 catalog_bp = Blueprint('catalog', __name__)
 
@@ -19,8 +19,11 @@ def catalog():
     Display all books in the catalog.
     Implements R2: Book Catalog Display
     """
-    books = get_all_books()
-    return render_template('catalog.html', books=books)
+    try:
+        books = get_all_books()
+        return render_template('catalog.html', books=books)
+    except Exception:
+        return "Error", 500
 
 @catalog_bp.route('/add_book', methods=['GET', 'POST'])
 def add_book():

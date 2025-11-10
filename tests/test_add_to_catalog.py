@@ -1,16 +1,22 @@
 # add_book_to_catalog - isbn too long, copies set to 0, copies set to -1, empty author field, empty title field
 
 import pytest
-from library_service import (
+from services.library_service import (
     add_book_to_catalog
 )
 
-def test_add_book_valid_input():
+def test_add_book_valid_input(mocker):
     """Test adding a book with valid input."""
-    success, message = add_book_to_catalog("Test Book", "Test Author", "1234567890123", 5)
+
+    mocker.patch("services.library_service.get_db_connection", autospec=True)
+    mocker.patch("services.library_service.get_all_books", return_value=[])
+    mock_insert = mocker.patch("services.library_service.insert_book", return_value=True)
+
+    success, message = add_book_to_catalog("Test Book", "Test Author", "1234567890126", 5)
     
     assert success == True
     assert "successfully added" in message.lower()
+
 
 def test_add_book_invalid_isbn_too_short():
     """Test adding a book with ISBN too short."""

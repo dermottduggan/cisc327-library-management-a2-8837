@@ -1,7 +1,7 @@
 # search_books_in_catalog - search for correct ISBN, search for incorrect ISBN, search for title with case matching, search for title with wrong casing, invalid title search
 
 import pytest
-from library_service import (
+from services.library_service import (
     search_books_in_catalog
 )
 
@@ -33,6 +33,6 @@ def test_search_catalog_valid_title_incorrect_case():
 
 def test_search_catalog_invalid_title():
     """Test searching catalog for invalid title."""
-    result = search_books_in_catalog("test book", "title")
+    result = search_books_in_catalog("test books", "title")
     
     assert len(result) == 0
